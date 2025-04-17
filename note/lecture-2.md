@@ -3,7 +3,10 @@
 - input $x_t$ -> observation $o_t$
 - output $y_t$ ->  action $a_t$
 - predicting process with param $\theta$ -> policy $\pi_{\theta}(a_t|o_t)$ 
+
+---
 # from observation $o_t$ to state $s_t$
+
 ![[Pasted image 20250416094952.png]]
 
 - an image's observation $o_t$ is a partial/noisy representation of current state $s_t$
@@ -13,11 +16,14 @@
 	1. o有时候能够直接表征s（围棋中的棋盘状态），有时候又无法完全表征
 	2. ML中的特征提取和RL中o到s映射的构建，目标都是提取对任务有用的信息；但是s需要满足markov要求，特征提取则不受markov要求的限制，并且通常是静态数据
 	3. o并不具备markov属性，只有s具有——我们尽可能使得o逼近s
+
+---
+
 # imitation learning
 
 - like traditional supervised learning, we give the model observation and its action to train the RL model (behavior-clone)
 - **it dosen't work**: when the model makes some **small mistakes**, it will be different from the training data, and it will don't know what to do (the current state is different from its training data), so it will make bigger mistakes
-- NVIDIA-3-CAMERAS: 3 cameras are distributed in different angels to correct **small mistakes** above to reduce the mistake-accumulate
+- NVIDIA example: 3 cameras are distributed in different angels to correct data from both the front, the right and the left side（将左摄像头得到的图像所对应的司机操作稍微加一个向右的角度，右摄像头向左，作为一个简单的补偿，对于draft的偏差给出了修正）
 - **trick1**: let training-date show the mistakes and its correction (反馈控制器) -- let the model to learning correction policy —— 手动修正错误action进行训练，关注单个数据的纠正
 - **trick2**: dataset-aggregation -- correct the dataset-distribution（类似于数据增强）-- need human to make decision/tags —— 将修正后的数据加入训练，关注整个数据分布的纠正
 	![[Pasted image 20250416110312.png]]
@@ -39,4 +45,24 @@
 			- mixture of gaussians
 			- latent variable model
 			- autoregressive discretization
+
+---
+
+# reward/cost function
+
+- **在简单假设下，误差随时间步二次增长**
+	![[Pasted image 20250417110241.png]]
+- **在DAgger策略与训练数据同分布情况下**
+	![[Pasted image 20250417115149.png]]
+- cost-function based on **indicative-function**
+	- weakness: before the agent get a real reward, it doesn't know what to do
+	- solution: design a function **more progressive**
+
+---
+
+# beyond just imitation
+
+- article: [[LEARNING TO REACH GOALS VIA ITERATED SUPERVISED LEARNING]]
+
+
 
